@@ -89,6 +89,7 @@ describe('install route', function () {
           assert.equal(_.where(choices, {value: 'generator-unicorn'}).length, 0);
           assert.equal(_.where(choices, {value: 'generator-unrelated'}).length, 0);
           done();
+          return Promise.resolve({toInstall: 'home'});
         }
       });
 
@@ -198,7 +199,7 @@ describe('install route', function () {
           var choices = arg[0].choices;
           assert.deepEqual(_.pluck(choices, 'value'), ['install', 'home']);
           done();
-          return Promise.resolve();
+          return Promise.resolve({toInstall: 'home'});
         }
       });
 
