@@ -62,7 +62,7 @@ describe('install route', function () {
           .reply(200, {rows: this.rows})
         .filteringPath(/\/[^\?]+$/g, '/pkg')
           .get('/pkg')
-          .times(2)
+          .times(4)
           .reply(200, this.pkgData);
 
       nock('http://yeoman.io')
@@ -89,8 +89,9 @@ describe('install route', function () {
           assert.equal(_.where(choices, {value: 'generator-unicorn'}).length, 0);
           assert.equal(_.where(choices, {value: 'generator-unrelated'}).length, 0);
           done();
-          return Promise.resolve({toInstall: 'home'});
         }
+
+        return Promise.resolve({toInstall: 'home'});
       });
 
       this.router.navigate('install');
@@ -109,8 +110,9 @@ describe('install route', function () {
           assert.equal(_.where(choices, {value: 'generator-blacklist-2'}).length, 0);
           assert.equal(_.where(choices, {value: 'generator-blacklist-3'}).length, 1);
           done();
-          return Promise.resolve({toInstall: 'home'});
         }
+
+        return Promise.resolve({toInstall: 'home'});
       });
 
       this.router.navigate('install');
@@ -128,8 +130,11 @@ describe('install route', function () {
         }
         if (call === 3) {
           assert.equal(arg[0].name, 'searchTerm');
-          done();
+          return Promise.resolve({searchTerm: 'unicorn'});
         }
+
+        done();
+        return Promise.resolve({toInstall: 'home'});
       });
 
       this.router.navigate('install');
@@ -142,9 +147,8 @@ describe('install route', function () {
         if (call === 1) {
           return Promise.resolve({searchTerm: 'unicorn'});
         }
-        if (call === 2) {
-          return Promise.resolve({toInstall: 'home'});
-        }
+
+        return Promise.resolve({toInstall: 'home'});
       });
 
       this.router.navigate('install').then(function () {
@@ -162,6 +166,8 @@ describe('install route', function () {
         if (call === 2) {
           return Promise.resolve({toInstall: 'generator-unicorn'});
         }
+
+        return Promise.resolve({toInstall: 'home'});
       });
 
       this.router.navigate('install').then(function () {
@@ -199,8 +205,9 @@ describe('install route', function () {
           var choices = arg[0].choices;
           assert.deepEqual(_.pluck(choices, 'value'), ['install', 'home']);
           done();
-          return Promise.resolve({toInstall: 'home'});
         }
+
+        return Promise.resolve({toInstall: 'home'});
       });
 
       this.router.navigate('install');
